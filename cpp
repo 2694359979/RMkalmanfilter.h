@@ -26,10 +26,10 @@ Point2f RM_kalmanfilter::predict_point(double _t, Point _p)
 {
     t = _t;
     Mat prediction = KF_.predict();
-    Point2f predict_pt = Point2f(prediction.at<float>(0),prediction.at<float>(1));
+    Point2f predict_pt = Point2f(prediction.at<float>(0));
 
     measurement_matrix.at<float>(0,0) = _p.x;
-    measurement_matrix.at<float>(1,0) = _p.y;
+    //measurement_matrix.at<float>(1,0) = _p.y;
 
     KF_.correct(measurement_matrix);
 
