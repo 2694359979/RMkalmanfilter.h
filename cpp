@@ -22,7 +22,7 @@ RM_kalmanfilter::~RM_kalmanfilter(){
 
 }
 
-Point2f RM_kalmanfilter::predict_point(double _t, Point _p)
+Point2f RM_kalmanfilter::predict_point(double _t)
 {
     t = _t;
     Mat prediction = KF_.predict();
@@ -32,24 +32,9 @@ Point2f RM_kalmanfilter::predict_point(double _t, Point _p)
     //measurement_matrix.at<float>(1,0) = _p.y;
 
     KF_.correct(measurement_matrix);
+    return predict_pt;
+ }
 
-    Point2f anti_kalmanPoint;
-    if((_p.x + anti_range*(_p.x - predict_pt.x))<=CAMERA_RESOLUTION_COLS
-        || (_p.x + anti_range*(_p.x - predict_pt.x))>=0)
-    {
-        if(abs(_p.x - predict_pt.x) > 10)
-            anti_kalmanPoint.x = _p.x + anti_range*(_p.x - predict_pt.x);
-        else
-            anti_kalmanPoint.x = _p.x;
-    }
-    else
-    {
-        anti_kalmanPoint.x = _p.x;
-    }
-    anti_kalmanPoint.y = _p.y;
-
-    return anti_kalmanPoint;
-}
 
 void RM_kalmanfilter::reset()
 {
